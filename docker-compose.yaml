@@ -60,6 +60,9 @@ services:
       MERCHANT_COUNT: "50"
       CUSTOMER_COUNT: "1000"
       KAFKA_BROKER: "kafka:9092"
+      EVENT_INIT_MODE: "flush"  # Options: flush, append, skip
+    tty: true
+    stdin_open: true
     networks:
       - kafka_network
 
