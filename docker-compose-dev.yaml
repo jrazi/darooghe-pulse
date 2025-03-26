@@ -45,7 +45,9 @@ services:
       - kafka_network
 
   darooghe-pulse:
-    image: javadraziii/darooghe-pulse:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: darooghe-pulse
     restart: always
     depends_on:
@@ -59,7 +61,7 @@ services:
       CUSTOMER_COUNT: "1000"
       KAFKA_BROKER: "kafka:9092"
       EVENT_INIT_MODE: "flush"  # Options: flush, append, skip
-      LOG_LEVEL: "INFO"
+      LOG_LEVEL: "DEBUG"
     tty: true
     stdin_open: true
     networks:

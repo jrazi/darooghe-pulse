@@ -9,7 +9,11 @@ from datetime import timedelta
 from confluent_kafka import Producer, Consumer, TopicPartition
 from confluent_kafka.admin import AdminClient
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+log_level_str = os.getenv("LOG_LEVEL", "INFO").upper()
+logging.basicConfig(
+    level=getattr(logging, log_level_str, logging.INFO),
+    format="%(asctime)s %(levelname)s %(message)s",
+)
 
 MERCHANT_CATEGORIES = [
     "retail",
