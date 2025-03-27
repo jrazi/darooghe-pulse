@@ -35,7 +35,7 @@ docker-compose -f docker-compose-dev.yaml up --build
 The main compose file uses the built pulse image, and has configuration fit for production environment, such as lower log level (It is better to use environment variables for such cases, but currently we go with this approach):
 
 ```bash
-docker-compose up -d --build
+docker-compose up -d
 ```
 
 ### 4. Accessing the Services
