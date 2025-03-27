@@ -10,7 +10,6 @@ DarooghePulse is a containerized transaction event generator designed for the Da
 
 ## Key Features
 
-- **Platform Compatibility**: Supports Ubuntu AMD64 and MacBook Apple Silicon.
 - **Historical Data Initialization**: Provides a realistic dataset ready for immediate analysis.
 - **Configurable Event Rate**: Adjustable parameters for event throughput and fraud simulation.
 
