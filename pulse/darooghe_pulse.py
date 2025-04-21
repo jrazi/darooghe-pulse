@@ -49,12 +49,12 @@ def generate_transaction_event(is_historical=False, timestamp_override=None):
     merchant_category = random.choice(MERCHANT_CATEGORIES)
     payment_method = random.choice(PAYMENT_METHODS)
     amount = random.randint(50000, 2000000)
-    base_lat = 35.7219
-    base_lng = 51.3347
+    base = merchant_bases[merchant_id]
     location = {
-        "lat": base_lat + random.uniform(-0.05, 0.05),
-        "lng": base_lng + random.uniform(-0.05, 0.05),
+           "lat": base["lat"] + random.uniform(-0.005, 0.005),
+           "lng": base["lng"] + random.uniform(-0.005, 0.005),
     }
+
     device_info = (
         random.choice(DEVICE_INFO_LIBRARY)
         if payment_method in ["online", "mobile"]
@@ -173,6 +173,13 @@ if __name__ == "__main__":
     fraud_rate = float(os.getenv("FRAUD_RATE", 0.02))
     declined_rate = float(os.getenv("DECLINED_RATE", 0.05))
     merchant_count = int(os.getenv("MERCHANT_COUNT", 50))
+    merchant_bases = {
+        f"merch_{i}": {
+            "lat": 35.7219 + random.uniform(-0.1, 0.1),
+            "lng": 51.3347 + random.uniform(-0.1, 0.1),
+        }
+        for i in range(1, merchant_count + 1)
+    }
     customer_count = int(os.getenv("CUSTOMER_COUNT", 1000))
     kafka_broker = os.getenv("KAFKA_BROKER", "kafka:9092")
     topic = "darooghe.transactions"
