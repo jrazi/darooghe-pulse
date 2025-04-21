@@ -1,5 +1,6 @@
 import datetime
 import os
+import random
 import sys
 from datetime import timedelta
 from math import radians, sin, cos, sqrt, atan2
@@ -18,7 +19,9 @@ def haversine(a, b):
 
 
 def test_location_cluster():
-    ts1 = datetime.datetime.utcnow()
+    ts1 = datetime.datetime(2025, 4, 21, 12, 0, 0)
+
+    random.seed(42)
 
     e1 = generate_transaction_event(timestamp_override=ts1)
     e2 = generate_transaction_event(timestamp_override=ts1 + timedelta(minutes=3))
