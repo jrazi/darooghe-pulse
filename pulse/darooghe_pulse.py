@@ -70,7 +70,7 @@ def generate_transaction_event(is_historical=False, timestamp_override=None):
     commission_type = random.choice(COMMISSION_TYPES)
     commission_amount = int(amount * 0.02)
     vat_amount = int(amount * 0.09)
-    total_amount = amount + vat_amount
+    total_amount = amount + vat_amount + commission_amount
     event = {
         "transaction_id": transaction_id,
         "timestamp": event_time.isoformat() + "Z",
