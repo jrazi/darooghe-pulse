@@ -1,4 +1,6 @@
 FROM python:3.9-slim
-COPY pulse ./pulse
+WORKDIR /app
 RUN pip install confluent-kafka
+COPY pulse/__init__.py .
+COPY pulse ./pulse
 ENTRYPOINT ["python", "pulse/darooghe_pulse.py"]

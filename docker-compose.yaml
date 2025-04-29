@@ -43,7 +43,7 @@ services:
       - kafka_network
 
   darooghe-pulse:
-    image: javadraziii/darooghe-pulse:0.2.0
+    image: javadraziii/darooghe-pulse:0.2.1
     container_name: darooghe-pulse
     restart: always
     depends_on:

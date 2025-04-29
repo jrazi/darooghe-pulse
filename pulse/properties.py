@@ -38,6 +38,14 @@ DEVICE_INFO_LIBRARY = [
     {"os": "Android", "app_version": "1.9.5", "device_model": "Google Pixel 6"},
 ]
 
+PAYMENT_METHOD_WEIGHTS = {
+    "online": 0.50,
+    "pos": 0.30,
+    "mobile": 0.15,
+    "nfc": 0.05
+}
+
+
 EVENT_RATE = float(os.getenv("EVENT_RATE", 100))
 peak_factor = float(os.getenv("PEAK_FACTOR", 2.5))
 fraud_rate = float(os.getenv("FRAUD_RATE", 0.02))
@@ -55,3 +63,4 @@ kafka_broker = os.getenv("KAFKA_BROKER", "kafka:9092")
 topic = "darooghe.transactions"
 event_init_mode = os.getenv("EVENT_INIT_MODE", "flush").lower()
 skip_initial = False
+

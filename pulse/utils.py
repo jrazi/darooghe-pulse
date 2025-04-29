@@ -11,3 +11,6 @@ def randomly_pick_from_weighted_map(keys, weights_dict):
     weight_list = [weights_dict[x]["weight"] for x in keys]
     return random.choices(population=keys, weights=weight_list, k=1)[0]
 
+def randomly_pick_from_weighed_list(keys, weight_list):
+    return random.choices(population=keys, weights=weight_list, k=1)[0]
+

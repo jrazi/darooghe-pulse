@@ -8,8 +8,13 @@ import logging
 from datetime import timedelta
 from confluent_kafka import Producer, Consumer, TopicPartition
 from confluent_kafka.admin import AdminClient
-from properties import *
-from utils import generate_random_datetime, randomly_pick_from_weighted_map
+try:
+    from pulse.properties import *
+    from pulse.utils import *
+except:
+    from properties import *
+    from utils import *
+
 
 log_level_str = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
@@ -26,6 +31,10 @@ def generate_transaction_event(is_historical=False, timestamp_override=None):
     merchant_id = f"merch_{random.randint(1, merchant_count)}"
     merchant_category = randomly_pick_from_weighted_map(MERCHANT_CATEGORIES, MERCHANT_POPULATION_PER_CATEGORY)
     payment_method = random.choice(PAYMENT_METHODS)
+    payment_method = randomly_pick_from_weighed_list(
+        list(PAYMENT_METHOD_WEIGHTS.keys()),
+        list(PAYMENT_METHOD_WEIGHTS.values())
+    )
     amount = random.randint(50000, 2000000)
     base = merchant_bases[merchant_id]
     location = {
