@@ -45,6 +45,16 @@ PAYMENT_METHOD_WEIGHTS = {
     "nfc": 0.05
 }
 
+# Log-normal distribution parameters per merchant category for transaction amounts
+# mu and sigma correspond to the log of amount in IRR
+AMOUNT_DISTRIBUTION_PARAMS = {
+    "retail":        {"mu": 13.0, "sigma": 0.75},
+    "food_service":  {"mu": 12.8, "sigma": 0.80},
+    "entertainment": {"mu": 13.2, "sigma": 0.90},
+    "transportation":{"mu": 12.9, "sigma": 0.70},
+    "government":    {"mu": 12.5, "sigma": 0.60},
+}
+
 
 EVENT_RATE = float(os.getenv("EVENT_RATE", 100))
 peak_factor = float(os.getenv("PEAK_FACTOR", 2.5))

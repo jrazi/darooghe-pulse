@@ -35,7 +35,9 @@ def generate_transaction_event(is_historical=False, timestamp_override=None):
         list(PAYMENT_METHOD_WEIGHTS.keys()),
         list(PAYMENT_METHOD_WEIGHTS.values())
     )
-    amount = random.randint(50000, 2000000)
+    params = AMOUNT_DISTRIBUTION_PARAMS[merchant_category]
+    raw_amount = sample_lognormal(params["mu"], params["sigma"])
+    amount = int(raw_amount)
     base = merchant_bases[merchant_id]
     location = {
            "lat": base["lat"] + random.uniform(-0.005, 0.005),
