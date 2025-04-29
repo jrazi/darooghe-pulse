@@ -8,36 +8,14 @@ import logging
 from datetime import timedelta
 from confluent_kafka import Producer, Consumer, TopicPartition
 from confluent_kafka.admin import AdminClient
+from properties import *
+from utils import generate_random_datetime, randomly_pick_from_weighted_map
 
 log_level_str = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
     level=getattr(logging, log_level_str, logging.INFO),
     format="%(asctime)s %(levelname)s %(message)s",
 )
-
-MERCHANT_CATEGORIES = [
-    "retail",
-    "food_service",
-    "entertainment",
-    "transportation",
-    "government",
-]
-PAYMENT_METHODS = ["online", "pos", "mobile", "nfc"]
-COMMISSION_TYPES = ["flat", "progressive", "tiered"]
-CUSTOMER_TYPES = ["individual", "CIP", "business"]
-FAILURE_REASONS = ["cancelled", "insufficient_funds", "system_error", "fraud_prevented"]
-DEVICE_INFO_LIBRARY = [
-    {"os": "Android", "app_version": "2.4.1", "device_model": "Samsung Galaxy S25"},
-    {"os": "iOS", "app_version": "3.1.0", "device_model": "iPhone 15"},
-    {"os": "Android", "app_version": "1.9.5", "device_model": "Google Pixel 6"},
-]
-
-
-def generate_random_datetime(start, end):
-    delta = end - start
-    random_seconds = random.uniform(0, delta.total_seconds())
-    return start + timedelta(seconds=random_seconds)
-
 
 def generate_transaction_event(is_historical=False, timestamp_override=None):
     event_time = (
@@ -46,7 +24,7 @@ def generate_transaction_event(is_historical=False, timestamp_override=None):
     transaction_id = str(uuid.uuid4())
     customer_id = f"cust_{random.randint(1, customer_count)}"
     merchant_id = f"merch_{random.randint(1, merchant_count)}"
-    merchant_category = random.choice(MERCHANT_CATEGORIES)
+    merchant_category = randomly_pick_from_weighted_map(MERCHANT_CATEGORIES, MERCHANT_POPULATION_PER_CATEGORY)
     payment_method = random.choice(PAYMENT_METHODS)
     amount = random.randint(50000, 2000000)
     base = merchant_bases[merchant_id]
@@ -168,23 +146,6 @@ def topic_has_messages(broker, topic):
 
 
 if __name__ == "__main__":
-    EVENT_RATE = float(os.getenv("EVENT_RATE", 100))
-    peak_factor = float(os.getenv("PEAK_FACTOR", 2.5))
-    fraud_rate = float(os.getenv("FRAUD_RATE", 0.02))
-    declined_rate = float(os.getenv("DECLINED_RATE", 0.05))
-    merchant_count = int(os.getenv("MERCHANT_COUNT", 50))
-    merchant_bases = {
-        f"merch_{i}": {
-            "lat": 35.7219 + random.uniform(-0.1, 0.1),
-            "lng": 51.3347 + random.uniform(-0.1, 0.1),
-        }
-        for i in range(1, merchant_count + 1)
-    }
-    customer_count = int(os.getenv("CUSTOMER_COUNT", 1000))
-    kafka_broker = os.getenv("KAFKA_BROKER", "kafka:9092")
-    topic = "darooghe.transactions"
-    event_init_mode = os.getenv("EVENT_INIT_MODE", "flush").lower()
-    skip_initial = False
     if event_init_mode == "flush":
         flush_topic(kafka_broker, topic)
     elif event_init_mode == "skip":

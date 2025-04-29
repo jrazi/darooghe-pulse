@@ -44,29 +44,6 @@ services:
     networks:
       - kafka_network
 
-  darooghe-pulse:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: darooghe-pulse
-    restart: always
-    depends_on:
-      - kafka
-    environment:
-      EVENT_RATE: "100"
-      PEAK_FACTOR: "2.5"
-      FRAUD_RATE: "0.02"
-      DECLINED_RATE: "0.05"
-      MERCHANT_COUNT: "50"
-      CUSTOMER_COUNT: "1000"
-      KAFKA_BROKER: "kafka:9092"
-      EVENT_INIT_MODE: "flush"  # Options: flush, append, skip
-      LOG_LEVEL: "DEBUG"
-    tty: true
-    stdin_open: true
-    networks:
-      - kafka_network
-
 volumes:
   kafka_data:
 
